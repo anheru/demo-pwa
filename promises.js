@@ -10,16 +10,16 @@
   cuadrado(2)
     .then(obj => {
       c('Inicio de Promise')
-      c(`Callback: ${obj.value}, ${obj.result}`)
+      c(`Promise: ${obj.value}, ${obj.result}`)
       return cuadrado(4)
     })
     .then(obj => {
-      c(`Callback: ${obj.value}, ${obj.result}`)
+      c(`Promise: ${obj.value}, ${obj.result}`)
       return cuadrado(6)
     })
     .then(obj => {
+      c(`Promise: ${obj.value}, ${obj.result}`)
       c('Fin de Promise')
-      c(`Callback: ${obj.value}, ${obj.result}`)
     })
     .catch(err => c(err))
 })(console.log);
