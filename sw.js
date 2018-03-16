@@ -10,6 +10,7 @@ urlsToCache = [
   './sw.js',
   './favicon.ico',
   './manifest.json',
+  './img/icon_192x192.png',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
 ]
 
@@ -98,3 +99,26 @@ self.addEventListener('push', e => {
   
   e.waitUntil(self.registration.showNotification(title, options))
 })
+
+self.addEventListener('sync', e => {
+  console.log('Evento: Sincronización de Fondo', e)
+
+  // Revisamos que la etiqueta de sincronización sea la que definimos o la que emulan las devtools
+  if (e.tag === 'github' || e.tag === 'test-tag-from-devtools') {
+    e.waitUntil(
+      // Comprobamos todas las pestañas abiertas y les enviamos postMessage
+      self.clients.matchAll()
+        .then(all => {
+          return all.map(client => {
+            return client.postMessage('online')
+          })
+        })
+        .catch(err => console.log(err))
+    )
+  }
+})
+
+// self.addEventListener('message', e => {
+//   console.log('Desde la Sincronizción de Fondo: ', e.data)
+//   fetchGitHubUser(localStorage.getItem('github'), true)
+// })
